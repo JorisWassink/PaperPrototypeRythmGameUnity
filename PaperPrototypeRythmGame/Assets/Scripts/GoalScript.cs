@@ -1,25 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-
+[RequireComponent(typeof(Renderer))]
 public class GoalScript : MonoBehaviour
 {
-    [SerializeField] private GameObject blockParent;
-    private List<GameObject> blocks;
-    [SerializeField] private List<KeyCode> inputKeys;
-
+    private List<GameObject> _blocks;
     private GameObject _currentBlock;
+    private Renderer _renderer;
+    private float _alpha;
+    
+    [SerializeField] private float minDistance;
+    
+    [SerializeField] private List<KeyCode> inputKeys;
+    [SerializeField] private GameObject smoke;
+    [SerializeField] private GameObject blockParent;
+        
+    [SerializeField] private Material meh;
+    [SerializeField] private Material nice;
+    [SerializeField] private Material great;
+
+
 
     private void Start()
     {
-        blocks = new List<GameObject>();
+        _renderer = GetComponent<Renderer>();
+        _alpha = _renderer.material.color.a;
+        _blocks = new List<GameObject>();
         foreach (Transform child in blockParent.transform)
         {
-            blocks.Add(child.gameObject);
+            _blocks.Add(child.gameObject);
         }
         UpdateBlock();
     }
@@ -31,7 +45,7 @@ public class GoalScript : MonoBehaviour
         float closestDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        foreach (var block in blocks)
+        foreach (var block in _blocks)
         {
             float distance = Vector3.Distance(currentPosition, block.transform.position);
             if (distance < closestDistance)
@@ -42,9 +56,10 @@ public class GoalScript : MonoBehaviour
         }
 
         if (closestBlock != null)
-        {
             _currentBlock = closestBlock.gameObject;
-        }
+        else
+            _currentBlock = null;
+        
     }
     
 
@@ -52,8 +67,19 @@ public class GoalScript : MonoBehaviour
     {
         if (AllKeysPressed())
         {
-            Debug.Log("AAAAAAAAAAAAAAAA OH GOD PLESE HELP ME THE BUTTON HAS BEEN PRESSED THE PAIN IS AGONIZING OH GOD OH MAN AH JEEZ");
-            BlockHit(_currentBlock);
+            var color = _renderer.material.color;
+            color.a = 1;
+            _renderer.material.color = color;
+            if (_currentBlock != null)
+            {
+                BlockHit(_currentBlock);
+            }
+        }
+        else
+        {
+            var color = _renderer.material.color;
+            color.a = _alpha;
+            _renderer.material.color = color;
         }
     }
     
@@ -66,6 +92,13 @@ public class GoalScript : MonoBehaviour
         return true;
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        _blocks.Remove(other.gameObject);
+        Destroy(_currentBlock);
+        UpdateBlock();
+    }
+
     private void BlockHit(GameObject block)
     {
         var renderer = GetComponent<Renderer>();
@@ -73,15 +106,40 @@ public class GoalScript : MonoBehaviour
         var maxDistance = renderer.bounds.extents.magnitude;
 
         var distanceToBlock = Vector3.Distance(worldCenter, block.transform.position);
+        if (distanceToBlock > minDistance)
+            return;
+        
+        
         var normalized = Mathf.Clamp01(1f - (distanceToBlock / maxDistance));
         var points = normalized * 3f;
 
-        GameManager.Instance.currentPoints += points;
-        Debug.Log(points);
+        GameManager.Instance.AddPoints(points);
 
-        blocks.Remove(block);
-        Destroy(block);
+        _blocks.Remove(block);
+        block.GetComponent<MovingBlock>().DestroyBlock(true);
         UpdateBlock();
+        
+        GameObject smokePuff = Instantiate(smoke, transform.position, transform.rotation);
+    
+        // Choose material based on points
+        Material selectedMaterial;
+        if (points < 1f)
+            selectedMaterial = meh;
+        else if (points < 2f)
+            selectedMaterial = nice;
+        else
+            selectedMaterial = great;
+
+        // Assign to particle system renderer
+        var particleRenderer = smokePuff.GetComponent<ParticleSystemRenderer>();
+        if (particleRenderer != null)
+            particleRenderer.material = selectedMaterial;
+
+        ParticleSystem parts = smokePuff.GetComponent<ParticleSystem>();
+        float totalDuration = parts.duration + parts.startLifetime;
+        Destroy(smokePuff, totalDuration);
     }
+    
+    
 
 }

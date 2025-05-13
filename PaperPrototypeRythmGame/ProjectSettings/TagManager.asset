@@ -3,12 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-<<<<<<< HEAD
   tags:
   - Block
-=======
-  tags: []
->>>>>>> origin/main
   layers:
   - Default
   - TransparentFX
