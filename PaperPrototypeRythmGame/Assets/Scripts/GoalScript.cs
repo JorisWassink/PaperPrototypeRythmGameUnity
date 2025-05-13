@@ -63,8 +63,11 @@ public class GoalScript : MonoBehaviour
     }
     
 
-    void Update()
+    private void Update()
     {
+        RefreshBlocks(); // Refresh block list every frame
+        UpdateBlock();   // Update the closest block
+
         if (AllKeysPressed())
         {
             var color = _renderer.material.color;
@@ -82,7 +85,21 @@ public class GoalScript : MonoBehaviour
             _renderer.material.color = color;
         }
     }
-    
+
+    private void RefreshBlocks()
+    {
+        _blocks.Clear();
+        foreach (Transform child in blockParent.transform)
+        {
+            if (child != null && child.gameObject.activeInHierarchy && !child.gameObject.CompareTag("Destroyed"))
+            {
+                _blocks.Add(child.gameObject);
+            }
+        }
+    }
+
+
+
     private bool AllKeysPressed()
     {
         foreach (var key in inputKeys)
@@ -115,6 +132,7 @@ public class GoalScript : MonoBehaviour
 
         GameManager.Instance.AddPoints(points);
 
+        block.tag = "Destroyed";
         _blocks.Remove(block);
         block.GetComponent<MovingBlock>().DestroyBlock(true);
         UpdateBlock();
@@ -136,7 +154,7 @@ public class GoalScript : MonoBehaviour
             particleRenderer.material = selectedMaterial;
 
         ParticleSystem parts = smokePuff.GetComponent<ParticleSystem>();
-        float totalDuration = parts.duration + parts.startLifetime;
+        float totalDuration = parts.main.duration;
         Destroy(smokePuff, totalDuration);
     }
     
