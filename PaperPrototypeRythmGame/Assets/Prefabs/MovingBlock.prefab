@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4642936053258941481}
   - component: {fileID: 2091101903619596656}
   - component: {fileID: 1340114926765137450}
-  - component: {fileID: 8731335137534392964}
   - component: {fileID: 1673231653882375503}
+  - component: {fileID: 8238053778223902655}
   m_Layer: 0
   m_Name: MovingBlock
   m_TagString: Block
@@ -108,19 +108,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8731335137534392964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3544432444610561468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff1347e8f12a4c54690a0ad829a587ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!54 &1673231653882375503
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,6 +135,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8238053778223902655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3544432444610561468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c6710b084d4954ba81654c35437471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
 --- !u!1001 &2566940771526455998
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Renderer))]
@@ -17,12 +18,11 @@ public class GoalScript : MonoBehaviour
     [SerializeField] private float minDistance;
     
     [SerializeField] private List<KeyCode> inputKeys;
-    [SerializeField] private GameObject smoke;
     [SerializeField] private GameObject blockParent;
         
-    [SerializeField] private Material meh;
-    [SerializeField] private Material nice;
-    [SerializeField] private Material great;
+
+
+    private bool _wasPressedLastFrame;
 
 
 
@@ -57,34 +57,54 @@ public class GoalScript : MonoBehaviour
 
         if (closestBlock != null)
             _currentBlock = closestBlock.gameObject;
+        
         else
             _currentBlock = null;
         
+
     }
-    
+
 
     private void Update()
     {
         RefreshBlocks(); // Refresh block list every frame
         UpdateBlock();   // Update the closest block
 
-        if (AllKeysPressed())
+        bool isPressed = AllKeysPressed();
+
+        if (isPressed)
         {
+            if (!_wasPressedLastFrame)
+            {
+                 _currentBlock.GetComponent<MovingBlock>().StartHolding(gameObject);
+            }
+            _currentBlock.GetComponent<MovingBlock>().IsHolding(gameObject);
+
             var color = _renderer.material.color;
             color.a = 1;
             _renderer.material.color = color;
-            if (_currentBlock != null)
-            {
-                BlockHit(_currentBlock);
-            }
+            
         }
         else
         {
+            if (_wasPressedLastFrame)
+            {
+                _currentBlock.GetComponent<MovingBlock>().StopHolding(gameObject);
+                _blocks.Remove(_currentBlock);
+                UpdateBlock();
+            }
+            
+
             var color = _renderer.material.color;
             color.a = _alpha;
             _renderer.material.color = color;
         }
+
+        _wasPressedLastFrame = isPressed; // Update the last frame state
     }
+
+
+
 
     private void RefreshBlocks()
     {
@@ -116,48 +136,5 @@ public class GoalScript : MonoBehaviour
         UpdateBlock();
     }
 
-    private void BlockHit(GameObject block)
-    {
-        var renderer = GetComponent<Renderer>();
-        var worldCenter = renderer.bounds.center;
-        var maxDistance = renderer.bounds.extents.magnitude;
-
-        var distanceToBlock = Vector3.Distance(worldCenter, block.transform.position);
-        if (distanceToBlock > minDistance)
-            return;
-        
-        
-        var normalized = Mathf.Clamp01(1f - (distanceToBlock / maxDistance));
-        var points = normalized * 3f;
-
-        GameManager.Instance.AddPoints(points);
-
-        block.tag = "Destroyed";
-        _blocks.Remove(block);
-        block.GetComponent<MovingBlock>().DestroyBlock(true);
-        UpdateBlock();
-        
-        GameObject smokePuff = Instantiate(smoke, transform.position, transform.rotation);
     
-        // Choose material based on points
-        Material selectedMaterial;
-        if (points < 1f)
-            selectedMaterial = meh;
-        else if (points < 2f)
-            selectedMaterial = nice;
-        else
-            selectedMaterial = great;
-
-        // Assign to particle system renderer
-        var particleRenderer = smokePuff.GetComponent<ParticleSystemRenderer>();
-        if (particleRenderer != null)
-            particleRenderer.material = selectedMaterial;
-
-        ParticleSystem parts = smokePuff.GetComponent<ParticleSystem>();
-        float totalDuration = parts.main.duration;
-        Destroy(smokePuff, totalDuration);
-    }
-    
-    
-
 }

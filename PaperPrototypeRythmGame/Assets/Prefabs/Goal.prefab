@@ -124,9 +124,9 @@ MonoBehaviour:
   inputKeys: 
   smoke: {fileID: 8591882494889105738}
   blockParent: {fileID: 0}
-  meh: {fileID: 2100000, guid: 5ba929e32a3dc1a458c15bb8463cc030, type: 2}
+  meh: {fileID: 2100000, guid: c03128ebc597527499c076ddc3a15530, type: 2}
   nice: {fileID: 2100000, guid: f5eee4c0318546641899fe8f659811ba, type: 2}
-  great: {fileID: 2100000, guid: c03128ebc597527499c076ddc3a15530, type: 2}
+  great: {fileID: 2100000, guid: 5ba929e32a3dc1a458c15bb8463cc030, type: 2}
 --- !u!1 &2533417873950078236
 GameObject:
   m_ObjectHideFlags: 0
