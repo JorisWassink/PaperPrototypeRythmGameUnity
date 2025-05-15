@@ -9,6 +9,7 @@ public struct NoteList
     public float InitialDelay;
     public float spawnInterval;
     public int spawnCount;
+    public float speed;
 }
 
 public class BlockSpawner : MonoBehaviour
@@ -33,15 +34,16 @@ public class BlockSpawner : MonoBehaviour
 
             for (int i = 0; i < note.spawnCount; i++)
             {
-                SpawnBlock(note.note);
+                SpawnBlock(note.note, note.speed);
                 yield return new WaitForSeconds(note.spawnInterval);
             }
         }
     }
 
-    void SpawnBlock(GameObject note)
+    void SpawnBlock(GameObject note, float speed)
     {
         var spawnedNote = Instantiate(note, spawnPoint.position, spawnPoint.rotation, transform);
         spawnedNote.GetComponent<Renderer>().material = blockMaterial;
+        spawnedNote.GetComponent<MovingBlock>().speed = speed;
     }
 }
