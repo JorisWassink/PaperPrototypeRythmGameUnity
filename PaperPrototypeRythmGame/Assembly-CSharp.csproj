@@ -47,8 +47,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MovingBlock.cs" />
     <Compile Include="Assets\Scripts\LongBlock.cs" />
-    <Compile Include="Assets\BlockSpawner.cs" />
     <Compile Include="Assets\Scripts\GoalScript.cs" />
+    <Compile Include="Assets\Scripts\BlockSpawner.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\SmallBlock.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

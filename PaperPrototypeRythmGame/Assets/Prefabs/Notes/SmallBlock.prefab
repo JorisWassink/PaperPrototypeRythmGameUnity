@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1673231653882375503}
   - component: {fileID: 8238053778223902655}
   m_Layer: 0
-  m_Name: MovingBlock
+  m_Name: SmallBlock
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
