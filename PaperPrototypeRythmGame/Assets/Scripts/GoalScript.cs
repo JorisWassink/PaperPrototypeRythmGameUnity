@@ -19,7 +19,8 @@ public class GoalScript : MonoBehaviour
     
     [SerializeField] private List<KeyCode> inputKeys;
     [SerializeField] private GameObject blockParent;
-        
+
+    
 
 
     private bool _wasPressedLastFrame;
@@ -42,12 +43,14 @@ public class GoalScript : MonoBehaviour
     private void UpdateBlock()
     {
         Transform closestBlock = null;
-        float closestDistance = Mathf.Infinity;
+        float closestDistance = minDistance;
         Vector3 currentPosition = transform.position;
 
         foreach (var block in _blocks)
         {
-            float distance = Vector3.Distance(currentPosition, block.transform.position);
+            MovingBlock movingBlock = block.GetComponent<MovingBlock>();
+
+            float distance = Vector3.Distance(currentPosition, movingBlock.StartPosition);
             if (distance < closestDistance)
             {
                 closestDistance = distance;
@@ -68,17 +71,22 @@ public class GoalScript : MonoBehaviour
     private void Update()
     {
         RefreshBlocks(); // Refresh block list every frame
-        UpdateBlock();   // Update the closest block
+        if (_currentBlock == null)
+            UpdateBlock();
 
         bool isPressed = AllKeysPressed();
 
         if (isPressed)
         {
-            if (!_wasPressedLastFrame)
+            if (_currentBlock != null)
             {
-                 _currentBlock.GetComponent<MovingBlock>().StartHolding(gameObject);
+                if (!_wasPressedLastFrame)
+                {
+                    _currentBlock.GetComponent<MovingBlock>().StartHolding(gameObject);
+                }
+
+                _currentBlock.GetComponent<MovingBlock>().IsHolding(gameObject);
             }
-            _currentBlock.GetComponent<MovingBlock>().IsHolding(gameObject);
 
             var color = _renderer.material.color;
             color.a = 1;
@@ -87,13 +95,11 @@ public class GoalScript : MonoBehaviour
         }
         else
         {
-            if (_wasPressedLastFrame)
+            if (_wasPressedLastFrame && _currentBlock != null)
             {
                 _currentBlock.GetComponent<MovingBlock>().StopHolding(gameObject);
                 _blocks.Remove(_currentBlock);
-                UpdateBlock();
             }
-            
 
             var color = _renderer.material.color;
             color.a = _alpha;

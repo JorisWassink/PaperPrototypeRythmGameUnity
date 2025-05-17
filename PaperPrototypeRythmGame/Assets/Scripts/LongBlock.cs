@@ -1,34 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class LongBlock : MovingBlock
 {
-    [SerializeField] private float _Length;
+    public float length;
     
-    Vector3 StartPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.min.y,
-        _renderer.bounds.center.z
-    );
 
-    private Vector3 EndPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.max.y,
-        _renderer.bounds.center.z
-    );
     
     private List<Vector3>_midPoints;
     private void Start()
     {
-        transform.localScale = new Vector3(transform.localScale.x, _Length, transform.localScale.z);
+        SetWorldHeight(gameObject, length);
         _renderer = GetComponent<Renderer>();
         
 ;
 
         _midPoints = new List<Vector3>();
         for (int i = 0; i < (int)speed; i++) {
-            float step = _Length / (int)speed;
+            float step = length / (int)speed;
             float y = step * i;
             _midPoints.Add(new Vector3(0, y, 0));
         }
@@ -65,4 +56,27 @@ public class LongBlock : MovingBlock
             DestroyBlock(true);
         }
     }
+    
+    void SetWorldHeight(GameObject obj, float length)
+    {
+        var meshFilter = obj.GetComponent<MeshFilter>();
+        if (meshFilter == null) return;
+
+        var mesh = meshFilter.sharedMesh;
+        if (mesh == null) return;
+
+        float baseHeight = mesh.bounds.size.y; // base mesh height (usually 1 for cube)
+        float parentScaleY = 1f;
+
+        if (obj.transform.parent != null)
+            parentScaleY = obj.transform.parent.lossyScale.y;
+
+        // Calculate needed localScale.y
+        float localScaleY = length / (baseHeight * parentScaleY);
+
+        Vector3 scale = obj.transform.localScale;
+        scale.y = localScaleY;
+        obj.transform.localScale = scale;
+    }
+
 }

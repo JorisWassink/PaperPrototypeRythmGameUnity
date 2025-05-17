@@ -147,7 +147,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c6710b084d4954ba81654c35437471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 0}
   speed: 2
+  minDistance: 2
+  meh: {fileID: 2100000, guid: c03128ebc597527499c076ddc3a15530, type: 2}
+  nice: {fileID: 2100000, guid: f5eee4c0318546641899fe8f659811ba, type: 2}
+  great: {fileID: 2100000, guid: 5ba929e32a3dc1a458c15bb8463cc030, type: 2}
+  smoke: {fileID: 9186448558937284511, guid: 0db41c26ab240f74ab10635d5433aa2e, type: 3}
 --- !u!1001 &2566940771526455998
 PrefabInstance:
   m_ObjectHideFlags: 0

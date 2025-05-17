@@ -1,16 +1,29 @@
 using UnityEngine;
+using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Interaction;
 using System.Collections;
 using UnityEngine.Serialization;
 
 [System.Serializable]
-public struct NoteList
+public class NoteList
 {
     public GameObject note;
     public float InitialDelay;
     public float spawnInterval;
     public int spawnCount;
     public float speed;
+    [Tooltip("Ignored if note is not a LongBlock — always set to 1.")]
+    public float holdDurationInSeconds = 1f;
+    
+    public void OnValidate()
+    {
+        if (note != null && note.GetComponent<LongBlock>() == null)
+        {
+            holdDurationInSeconds = 1f;
+        }
+    }
 }
+
 
 public class BlockSpawner : MonoBehaviour
 {
@@ -34,16 +47,21 @@ public class BlockSpawner : MonoBehaviour
 
             for (int i = 0; i < note.spawnCount; i++)
             {
-                SpawnBlock(note.note, note.speed);
-                yield return new WaitForSeconds(note.spawnInterval);
+                SpawnBlock(note);
+                yield return new WaitForSeconds(note.spawnInterval + note.holdDurationInSeconds);
             }
         }
     }
 
-    void SpawnBlock(GameObject note, float speed)
+    void SpawnBlock(NoteList list)
     {
-        var spawnedNote = Instantiate(note, spawnPoint.position, spawnPoint.rotation, transform);
+        var spawnedNote = Instantiate(list.note, spawnPoint.position, spawnPoint.rotation, transform);
         spawnedNote.GetComponent<Renderer>().material = blockMaterial;
-        spawnedNote.GetComponent<MovingBlock>().speed = speed;
+        spawnedNote.GetComponent<MovingBlock>().speed = list.speed;
+        if (spawnedNote.GetComponent<LongBlock>() != null)
+        {
+            spawnedNote.GetComponent<LongBlock>().length = list.holdDurationInSeconds * list.speed;
+        }
+
     }
 }

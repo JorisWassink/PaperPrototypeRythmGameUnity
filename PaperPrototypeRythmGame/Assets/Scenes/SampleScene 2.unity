@@ -167,12 +167,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
-  blockMaterial: {fileID: 0}
+  blockMaterial: {fileID: 2100000, guid: aaa9942f5d73b2c44b1f70a632c4da36, type: 2}
   noteList:
-  - note: {fileID: 3544432444610561468, guid: c851543857b048340bb62c8ea7a310bb, type: 3}
+  - note: {fileID: 3544432444610561468, guid: b8f8def5a55bbbf4bbca1bc908196e20, type: 3}
     InitialDelay: 0
-    spawnInterval: 0
-    spawnCount: 0
+    spawnInterval: 0.1
+    spawnCount: 10
+    speed: 5
+    holdDurationInSeconds: 1
 --- !u!1 &79305969
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +221,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   blockMaterial: {fileID: 0}
-  noteList: []
+  noteList:
+  - note: {fileID: 3544432444610561468, guid: b8f8def5a55bbbf4bbca1bc908196e20, type: 3}
+    InitialDelay: 0
+    spawnInterval: 0
+    spawnCount: 0
+    speed: 0
+    holdDurationInSeconds: 0
 --- !u!1001 &101127765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -548,7 +556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
-  blockMaterial: {fileID: 0}
+  blockMaterial: {fileID: 2100000, guid: cd2faca2218bc6b4daf45afddb548d5c, type: 2}
   noteList: []
 --- !u!1 &318900445
 GameObject:

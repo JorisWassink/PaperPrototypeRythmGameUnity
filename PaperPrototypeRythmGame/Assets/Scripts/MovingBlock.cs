@@ -17,7 +17,17 @@ public abstract class MovingBlock : MonoBehaviour
     
     [SerializeField] private GameObject smoke;
 
-    
+    public Vector3 StartPosition => new Vector3(
+        _renderer.bounds.center.x,
+        _renderer.bounds.min.y,
+        _renderer.bounds.center.z
+    );
+
+    public Vector3 EndPosition => new Vector3(
+        _renderer.bounds.center.x,
+        _renderer.bounds.max.y,
+        _renderer.bounds.center.z
+    );
     public abstract void StartHolding(GameObject goal);
     public abstract void IsHolding(GameObject goal);
     public abstract void StopHolding(GameObject goal);
@@ -32,6 +42,7 @@ public abstract class MovingBlock : MonoBehaviour
         _particleSystem = GetComponentInChildren<ParticleSystem>();
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.velocity = -transform.up * speed;
+        
         
         var particleRenderer =_particleSystem.gameObject.GetComponent<Renderer>();
         particleRenderer.material = _renderer.material;
