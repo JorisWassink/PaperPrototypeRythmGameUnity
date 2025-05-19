@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 public abstract class MovingBlock : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
@@ -16,7 +18,7 @@ public abstract class MovingBlock : MonoBehaviour
     [SerializeField] private Material great;
     
     [SerializeField] private GameObject smoke;
-
+    
     public Vector3 StartPosition => new Vector3(
         _renderer.bounds.center.x,
         _renderer.bounds.min.y,

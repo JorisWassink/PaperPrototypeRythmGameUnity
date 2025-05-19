@@ -39,6 +39,11 @@ public class GoalScript : MonoBehaviour
         UpdateBlock();
     }
 
+    private void OnEnable()
+    {
+        BlockSpawner.Instance.allGoals.Add(transform);
+    }
+
 
     private void UpdateBlock()
     {
@@ -61,10 +66,11 @@ public class GoalScript : MonoBehaviour
         if (closestBlock != null)
             _currentBlock = closestBlock.gameObject;
         
+
         else
             _currentBlock = null;
         
-
+            
     }
 
 

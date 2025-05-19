@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Block
   - Destroyed
+  - Spawner
   layers:
   - Default
   - TransparentFX
