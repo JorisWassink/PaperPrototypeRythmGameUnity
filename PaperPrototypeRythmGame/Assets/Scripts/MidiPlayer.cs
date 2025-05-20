@@ -53,10 +53,12 @@ public class MidiPlayer : MonoBehaviour
         InitializeFilePlayback(MidiFile);
     }
 
-    private void Start()
+    private void Update()
     {
-        StartPlaying?.Invoke(this, new Event());
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartPlaying?.Invoke(this, new Event());
+        }
     }
 
     public void OnQuit()
