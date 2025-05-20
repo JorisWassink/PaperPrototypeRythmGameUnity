@@ -82,47 +82,43 @@ public class BlockSpawner : MonoBehaviour
 
     private void StartPlaying(object sender, Event e)
     {
+        var startTime = AudioSettings.dspTime;
+
         var note = _midiPlayer.Notes[0];
-        var time = EstimateFallTime(note);
-        Debug.Log(time);
+        var time = EstimateFallTime(note, startTime);
+        //_midiPlayer.StartPlayback();
         StartCoroutine(WaitAndPlay(time));
-        StartCoroutine(SpawnNotesWithTiming());
+        StartCoroutine(SpawnNotesWithTiming(startTime));
     }
     
-    private IEnumerator SpawnNotesWithTiming()
+    private IEnumerator SpawnNotesWithTiming(double startTime)
     {
-        double startTime = AudioSettings.dspTime;
-
-        // Load MIDI file and tempo map once
-        MidiFile file = MidiFile.Read(midiFile);
+        MidiFile file = _midiPlayer.MidiFile;
         var tempoMap = file.GetTempoMap();
 
-        foreach (var note in _midiPlayer.Notes.OrderBy(n => n.Time))
+        foreach (var note in _midiPlayer.Notes)
         {
-            // Convert note time to seconds
             var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
-            double noteTimeInSeconds = noteTimeSpan.TotalSeconds;
+            var noteTimeInSeconds = noteTimeSpan.TotalSeconds;
+            var noteSpawnTime = startTime + noteTimeInSeconds;
+            var waitTime = noteSpawnTime - AudioSettings.dspTime;
 
-            // Calculate when the note should spawn
-            double noteSpawnTime = startTime + noteTimeInSeconds;
-            double waitTime = noteSpawnTime - AudioSettings.dspTime;
-
-            // Wait until it's time to spawn the note
             if (waitTime > 0)
-                yield return new WaitForSeconds((float)waitTime);
+                yield return new WaitForSecondsRealtime((float)waitTime);
 
             SpawnMidiNote(block, note);
         }
     }
-
-
-
+    
     private IEnumerator WaitAndPlay(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        float start = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - start < waitTime)
+            yield return null;
+
         _midiPlayer.StartPlayback();
-        
     }
+
     private void OnApplicationQuit()
     {
         _midiPlayer.NotesPlaybackStartedEvent -= OnNotesPlaybackStarted;
@@ -139,7 +135,7 @@ public class BlockSpawner : MonoBehaviour
     
     private void OnNotesPlaybackStarted(object sender, NotesEventArgs e) { }
 
-    float EstimateFallTime(Note note)
+    float EstimateFallTime(Note note, double startTime)
     {
         var closestSpawn = GetClosestSpawnPoint(note);
 
@@ -151,17 +147,12 @@ public class BlockSpawner : MonoBehaviour
 
         // Calculate full 3D distance including Y for fall time
         var distance = Vector3.Distance(closestSpawn.position, goal.position);
-        Debug.Log($"distance: {distance}");
 
         var speed = note.Velocity / 100f * blockSpeed;
         
-        Debug.Log($"speed: {speed}");
         
-        
-        var startTime = (float)AudioSettings.dspTime;
-
         // Load MIDI file and tempo map once
-        MidiFile file = MidiFile.Read(midiFile);
+        MidiFile file = _midiPlayer.MidiFile;
         var tempoMap = file.GetTempoMap();
         
         var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
@@ -172,7 +163,7 @@ public class BlockSpawner : MonoBehaviour
         var waitTime = noteSpawnTime - (float)AudioSettings.dspTime;
         
         
-        return (distance / Mathf.Max(0.01f, speed)) - waitTime; // prevent div by 0
+        return (distance / Mathf.Max(0.01f, speed)) - noteTimeInSeconds; // prevent div by 0
     }
     
     void SpawnMidiNote(GameObject block, Note note)

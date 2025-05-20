@@ -15,6 +15,7 @@ public class MidiPlayer : MonoBehaviour
 
     private OutputDevice _outputDevice;
     
+    public MidiFile MidiFile { get; private set; }
     public Playback Playback;
     public List<Note> Notes;
     public Note MinNote;
@@ -26,8 +27,8 @@ public class MidiPlayer : MonoBehaviour
     
     public void InitializePlayer(string midiFile)
     {
-        var midi = MidiFile.Read(midiFile);
-        Notes = midi.GetNotes().ToList();
+        MidiFile= MidiFile.Read(midiFile);
+        Notes = MidiFile.GetNotes().ToList();
 
         List<Note> delete = new List<Note>();
         MinNote = Notes[0];
@@ -49,7 +50,7 @@ public class MidiPlayer : MonoBehaviour
             Notes.Remove(note);
         
         InitializeOutputDevice();
-        InitializeFilePlayback(midi);
+        InitializeFilePlayback(MidiFile);
     }
 
     private void Start()

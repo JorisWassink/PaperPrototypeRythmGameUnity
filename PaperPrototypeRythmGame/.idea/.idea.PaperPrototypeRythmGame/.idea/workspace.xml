@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d907a4b5-7b98-49b4-9219-ce8fa32899bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" afterDir="false" />
     </list>
@@ -108,7 +107,7 @@
       <workItem from="1747643805657" duration="175000" />
       <workItem from="1747644109403" duration="15799000" />
       <workItem from="1747728316064" duration="1495000" />
-      <workItem from="1747734571325" duration="2479000" />
+      <workItem from="1747734571325" duration="6169000" />
     </task>
     <servers />
   </component>
