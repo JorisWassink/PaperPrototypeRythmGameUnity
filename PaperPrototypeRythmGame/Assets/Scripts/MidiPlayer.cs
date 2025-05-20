@@ -34,7 +34,7 @@ public class MidiPlayer : MonoBehaviour
         MaxNote = Notes[Notes.Count - 1];
         foreach (var note in Notes)
         {
-            if (note.Channel == 1)
+            if (note.Channel != 3)
                 delete.Add(note);
             else
             {

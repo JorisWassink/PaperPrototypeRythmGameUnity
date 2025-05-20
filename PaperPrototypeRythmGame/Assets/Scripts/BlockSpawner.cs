@@ -84,6 +84,7 @@ public class BlockSpawner : MonoBehaviour
     {
         var note = _midiPlayer.Notes[0];
         var time = EstimateFallTime(note);
+        Debug.Log(time);
         StartCoroutine(WaitAndPlay(time));
         StartCoroutine(SpawnNotesWithTiming());
     }
@@ -134,15 +135,9 @@ public class BlockSpawner : MonoBehaviour
         OnApplicationQuit();
     }
 
-    private void OnNotesPlaybackFinished(object sender, NotesEventArgs e)
-    {
-        
-    }
+    private void OnNotesPlaybackFinished(object sender, NotesEventArgs e) { }
     
-    private void OnNotesPlaybackStarted(object sender, NotesEventArgs e)
-    {
-        
-    }
+    private void OnNotesPlaybackStarted(object sender, NotesEventArgs e) { }
 
     float EstimateFallTime(Note note)
     {
@@ -156,10 +151,28 @@ public class BlockSpawner : MonoBehaviour
 
         // Calculate full 3D distance including Y for fall time
         var distance = Vector3.Distance(closestSpawn.position, goal.position);
+        Debug.Log($"distance: {distance}");
 
         var speed = note.Velocity / 100f * blockSpeed;
+        
+        Debug.Log($"speed: {speed}");
+        
+        
+        var startTime = (float)AudioSettings.dspTime;
 
-        return distance / Mathf.Max(0.01f, speed); // prevent div by 0
+        // Load MIDI file and tempo map once
+        MidiFile file = MidiFile.Read(midiFile);
+        var tempoMap = file.GetTempoMap();
+        
+        var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
+        var noteTimeInSeconds = (float)noteTimeSpan.TotalSeconds;
+
+        // Calculate when the note should spawn
+        var noteSpawnTime = startTime + noteTimeInSeconds;
+        var waitTime = noteSpawnTime - (float)AudioSettings.dspTime;
+        
+        
+        return (distance / Mathf.Max(0.01f, speed)) - waitTime; // prevent div by 0
     }
     
     void SpawnMidiNote(GameObject block, Note note)
@@ -169,6 +182,7 @@ public class BlockSpawner : MonoBehaviour
         var spawnedNote = Instantiate(block, closest.position, Quaternion.identity, closest);
         spawnedNote.GetComponent<Renderer>().material = closest.GetComponent<Renderer>().material;
         spawnedNote.GetComponent<MovingBlock>().speed = note.Velocity / 100f * blockSpeed;
+        Debug.Log($"spawnedNote speed: {spawnedNote.GetComponent<MovingBlock>().speed}");
         if (spawnedNote.GetComponent<LongBlock>() != null)
         {
             spawnedNote.GetComponent<LongBlock>().length = note.Length;
