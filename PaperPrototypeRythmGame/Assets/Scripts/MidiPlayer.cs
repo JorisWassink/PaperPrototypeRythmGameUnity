@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Melanchall.DryWetMidi.Common;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Multimedia;
@@ -35,19 +36,15 @@ public class MidiPlayer : MonoBehaviour
         MaxNote = Notes[Notes.Count - 1];
         foreach (var note in Notes)
         {
-            if (note.Channel != 3)
-                delete.Add(note);
-            else
-            {
+
                 if (note.NoteNumber > MaxNote.NoteNumber)
                     MaxNote = note;
                 if (note.NoteNumber < MinNote.NoteNumber)
                     MinNote = note;
-            }
+            
         }
 
-        foreach (var note in delete)
-            Notes.Remove(note);
+
         
         InitializeOutputDevice();
         InitializeFilePlayback(MidiFile);
@@ -122,6 +119,45 @@ public class MidiPlayer : MonoBehaviour
     private void OnNotesPlaybackStarted(object sender, NotesEventArgs e)
     {
         NotesPlaybackStartedEvent?.Invoke(sender, e);
+    }
+
+    public List<Note> GetNotesOfChannel(int channel)
+    {
+        List<Note> notes = new List<Note>();
+        foreach (var note in Notes)
+        {
+            if (note.Channel == channel)
+            {
+                notes.Add(note);
+            }
+        }
+        return notes;
+    }
+
+    public Note GetMaxNote(List<Note> notes)
+    {
+        var maxNote = notes[0];
+        foreach (var note in notes)
+        {
+            if (note.Octave > maxNote.Octave)
+            {
+                maxNote = note;
+            }
+        }
+        return maxNote;
+    }
+    
+    public Note GetMinNote(List<Note> notes)
+    {
+        var minNote = notes[0];
+        foreach (var note in notes)
+        {
+            if (note.Octave < minNote.Octave)
+            {
+                minNote = note;
+            }
+        }
+        return minNote;
     }
 
     private void LogNotes(string title, NotesEventArgs e)

@@ -7,6 +7,7 @@
     <list default="true" id="d907a4b5-7b98-49b4-9219-ce8fa32899bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,10 +19,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/011ccacb58784a80ac4b48b4c50ee0b7176400/3f/558f2c18/MonoBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/44baafde34d548b79233aeeb474720f91fe00/66/7aaa450f/Rigidbody.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/24/e6d60f92/NotesEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/40/15dac656/MetricTimeSpan.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/65/13c66e23/Playback.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/9e/2d95ae3b/Note.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/d4/2a2d4372/TimeConverter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/78401d1708234a9fb71c84a647c6082f26400/28/e1281168/ParticleSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Documenten/CMGT/Y2T3/Networking/A3_mini_town/A3_mini_town/starting_code/client/Assets/Scripts/ChatLobbyClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" root0="FORCE_HIGHLIGHTING" />
@@ -107,7 +111,7 @@
       <workItem from="1747643805657" duration="175000" />
       <workItem from="1747644109403" duration="15799000" />
       <workItem from="1747728316064" duration="1495000" />
-      <workItem from="1747734571325" duration="9588000" />
+      <workItem from="1747734571325" duration="12250000" />
     </task>
     <servers />
   </component>

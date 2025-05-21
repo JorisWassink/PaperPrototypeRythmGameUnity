@@ -6,7 +6,7 @@ using System.Linq;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Multimedia;
-
+using UnityEngine.Serialization;
 
 
 public class BlockSpawner : MonoBehaviour
@@ -18,16 +18,15 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField] private string midiFile;
     [SerializeField] private GameObject block;
     [SerializeField] private float blockSpeed;
+    [SerializeField] private GameObject p1Goals;
+    [SerializeField] private GameObject p2Goals;
+    [SerializeField] private GameObject sharedGoals;
+    
     private MidiPlayer _midiPlayer;
     private List<Transform> _spawnPoints;
-
-    [HideInInspector] public List<Transform> allGoals; // Assign all goal points (unsorted) in Inspector
-    private List<Transform> goalPoints;
-
+    
     private void Awake()
     {
-        allGoals = new List<Transform>();
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -48,19 +47,6 @@ public class BlockSpawner : MonoBehaviour
                 _spawnPoints.Add(trans.transform);
             }
         }
-        
-        goalPoints = new List<Transform>();
-
-        foreach (var spawner in _spawnPoints)
-        {
-            Transform closestGoal = allGoals
-                .OrderBy(g => Vector3.Distance(spawner.position, g.position))
-                .First();
-
-            goalPoints.Add(closestGoal);
-            allGoals.Remove(closestGoal); // Prevent duplicates
-        }
-
     }
 
     void InitializeMidiPlayer()
@@ -83,18 +69,37 @@ public class BlockSpawner : MonoBehaviour
     private void StartPlaying(object sender, Event e)
     {
         var fallTime = 3f;
+
+        var p1Notes = _midiPlayer.GetNotesOfChannel(4);
+        var p2Notes = _midiPlayer.GetNotesOfChannel(2);
+        var sharedNotes = _midiPlayer.GetNotesOfChannel(1);
+        
+        var p1Goals = this.p1Goals.GetComponentsInChildren<GoalScript>(true)
+            .Select(t => t.gameObject)
+            .ToList();
+        var p2Goals = this.p2Goals.GetComponentsInChildren<GoalScript>(true)
+            .Select(t => t.gameObject)
+            .ToList();
+        
+        var sharedGoals = this.sharedGoals.GetComponentsInChildren<GoalScript>(true)
+            .Select(t => t.gameObject)
+            .ToList();
+
+        
         var startDspTime = AudioSettings.dspTime;
         StartCoroutine(WaitAndPlay(fallTime));
-        StartCoroutine(SpawnNotesWithTiming(startDspTime, fallTime));
+        StartCoroutine(SpawnNotesWithTiming(p1Notes, p1Goals,startDspTime, fallTime));
+        StartCoroutine(SpawnNotesWithTiming(p2Notes, p2Goals,startDspTime, fallTime));
+        StartCoroutine(SpawnNotesWithTiming(sharedNotes, sharedGoals,startDspTime, fallTime));
 
     }
     
-    private IEnumerator SpawnNotesWithTiming(double startTime, float fallTime)
+    private IEnumerator SpawnNotesWithTiming(List<Note> notes, List<GameObject> goals, double startTime, float fallTime)
     {
         MidiFile file = _midiPlayer.MidiFile;
         var tempoMap = file.GetTempoMap();
 
-        foreach (var note in _midiPlayer.Notes)
+        foreach (var note in notes)
         {
             var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
             var noteTimeInSeconds = noteTimeSpan.TotalSeconds;
@@ -105,7 +110,7 @@ public class BlockSpawner : MonoBehaviour
 
 
             var dist = EstimateRequiredDistance(note, fallTime);
-            SpawnMidiNote(block, note, dist);
+            SpawnMidiNote(block, notes, note, goals, dist);
         }
     }
     
@@ -143,12 +148,13 @@ public class BlockSpawner : MonoBehaviour
     }
 
     
-    void SpawnMidiNote(GameObject block, Note note, float height)
+    void SpawnMidiNote(GameObject block, List<Note> notes, Note note, List<GameObject> goals, float height)
     {
-        var closest = GetClosestSpawnPoint(note);
-        var goal = GetGoalForSpawner(closest);
+        var goal = GetClosestGoal(note, notes, goals);
+
+        var closest = goal.spawnPoint;
         
-        var spawnPosition = new Vector3(closest.position.x, goal.position.y + height, closest.position.z);
+        var spawnPosition = new Vector3(closest.position.x, goal.transform.position.y + height, closest.position.z);
         
         var spawnedNote = Instantiate(block, spawnPosition, Quaternion.identity);
         spawnedNote.transform.SetParent(closest.transform, true);        
@@ -172,16 +178,18 @@ public class BlockSpawner : MonoBehaviour
         var closestSpawn = _spawnPoints.OrderBy(p => Vector3.Distance(p.position, interpolated)).First();
         return closestSpawn;
     }
-    
-    public Transform GetGoalForSpawner(Transform spawner)
+
+    private GoalScript GetClosestGoal(Note note, List<Note> notes, List<GameObject> goals)
     {
-        int index = _spawnPoints.IndexOf(spawner);
-        if (index >= 0 && index < goalPoints.Count)
-        {
-            return goalPoints[index];
-        }
-        Debug.LogWarning("Spawner not found or goal not assigned.");
-        return null;
+        var minNote = _midiPlayer.GetMinNote(notes).NoteNumber;
+        var maxNote = _midiPlayer.GetMaxNote(notes).NoteNumber;
+        var t = (float)(note.NoteNumber - minNote) / (maxNote - minNote);
+        
+        var left = goals.OrderBy(g => g.transform.position.x).First();
+        var right = goals.OrderBy(g => g.transform.position.x).Last();
+        var interpolated = Vector3.Lerp(left.transform.position, right.transform.position, t);
+        var closestSpawn = goals.OrderBy(p => Vector3.Distance(p.transform.position, interpolated)).First();
+        return closestSpawn.GetComponent<GoalScript>();
     }
 
 }

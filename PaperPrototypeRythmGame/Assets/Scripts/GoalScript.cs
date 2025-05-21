@@ -20,7 +20,7 @@ public class GoalScript : MonoBehaviour
     [SerializeField] private List<KeyCode> inputKeys;
     [SerializeField] private GameObject blockParent;
 
-    
+    [HideInInspector] public Transform spawnPoint;
 
 
     private bool _wasPressedLastFrame;
@@ -29,6 +29,7 @@ public class GoalScript : MonoBehaviour
 
     private void Start()
     {
+        spawnPoint = blockParent.transform;
         _renderer = GetComponent<Renderer>();
         _alpha = _renderer.material.color.a;
         _blocks = new List<GameObject>();
@@ -37,11 +38,6 @@ public class GoalScript : MonoBehaviour
             _blocks.Add(child.gameObject);
         }
         UpdateBlock();
-    }
-
-    private void OnEnable()
-    {
-        BlockSpawner.Instance.allGoals.Add(transform);
     }
 
 
