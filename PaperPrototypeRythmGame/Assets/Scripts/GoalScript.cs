@@ -15,6 +15,9 @@ public class GoalScript : MonoBehaviour
     private Renderer _renderer;
     private float _alpha;
     
+    private List<Vector3> _positions;
+    private int _currentIndex = 0;
+    
     [SerializeField] private float minDistance;
     
     [SerializeField] private List<KeyCode> inputKeys;
@@ -33,11 +36,13 @@ public class GoalScript : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _alpha = _renderer.material.color.a;
         _blocks = new List<GameObject>();
+        _positions = NoteLines.Instance.noteLines;
         foreach (Transform child in blockParent.transform)
         {
             _blocks.Add(child.gameObject);
         }
         UpdateBlock();
+        UpdatePosition(0);
     }
 
 
@@ -61,12 +66,10 @@ public class GoalScript : MonoBehaviour
 
         if (closestBlock != null)
             _currentBlock = closestBlock.gameObject;
-        
-
         else
             _currentBlock = null;
         
-            
+        
     }
 
 
@@ -109,8 +112,21 @@ public class GoalScript : MonoBehaviour
         }
 
         _wasPressedLastFrame = isPressed; // Update the last frame state
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && _currentIndex > 0)
+            UpdatePosition(_currentIndex - 1);
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) && _currentIndex + 1 < _positions.Count)
+            UpdatePosition(_currentIndex + 1);
+
+        
     }
 
+    private void UpdatePosition(int index)
+    {
+        _currentIndex = index;
+        transform.position = _positions[index];
+    }
 
 
 

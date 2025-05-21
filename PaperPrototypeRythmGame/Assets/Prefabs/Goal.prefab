@@ -120,13 +120,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281ebe2884b58bf44a6c401d4b521cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 5
+  minDistance: 1
   inputKeys: 
-  smoke: {fileID: 8591882494889105738}
   blockParent: {fileID: 0}
-  meh: {fileID: 2100000, guid: c03128ebc597527499c076ddc3a15530, type: 2}
-  nice: {fileID: 2100000, guid: f5eee4c0318546641899fe8f659811ba, type: 2}
-  great: {fileID: 2100000, guid: 5ba929e32a3dc1a458c15bb8463cc030, type: 2}
+  spawnPoint: {fileID: 0}
 --- !u!1 &2533417873950078236
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,10 +363,5 @@ PrefabInstance:
 --- !u!4 &5720548023168495240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5126175889882441821, guid: 0db41c26ab240f74ab10635d5433aa2e, type: 3}
-  m_PrefabInstance: {fileID: 594666266742490837}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8591882494889105738 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9186448558937284511, guid: 0db41c26ab240f74ab10635d5433aa2e, type: 3}
   m_PrefabInstance: {fileID: 594666266742490837}
   m_PrefabAsset: {fileID: 0}

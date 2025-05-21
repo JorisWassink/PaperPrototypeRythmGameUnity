@@ -70,9 +70,9 @@ public class BlockSpawner : MonoBehaviour
     {
         var fallTime = 3f;
 
-        var p1Notes = _midiPlayer.GetNotesOfChannel(4);
-        var p2Notes = _midiPlayer.GetNotesOfChannel(2);
-        var sharedNotes = _midiPlayer.GetNotesOfChannel(1);
+        var p1Notes = _midiPlayer.GetNotesOfChannel(1);
+        var p2Notes = _midiPlayer.GetNotesOfChannel(5);
+        var sharedNotes = _midiPlayer.GetNotesOfChannel(6);
         
         var p1Goals = this.p1Goals.GetComponentsInChildren<GoalScript>(true)
             .Select(t => t.gameObject)
