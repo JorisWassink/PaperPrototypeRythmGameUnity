@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d907a4b5-7b98-49b4-9219-ce8fa32899bd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/NoteLines.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NoteLines.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/NoteLines.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NoteLines.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovingBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovingBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestSong.mid.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestSong.mid.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

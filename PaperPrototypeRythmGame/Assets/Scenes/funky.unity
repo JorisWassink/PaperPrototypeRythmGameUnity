@@ -172,7 +172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2328172209682003943, guid: d02d9443e4bb46c48b0da1d475b87cde, type: 3}
       propertyPath: m_Name
-      value: Goal A
+      value: Goal
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832888753957007931, guid: d02d9443e4bb46c48b0da1d475b87cde, type: 3}
+      propertyPath: MaxKeys
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3832888753957007931, guid: d02d9443e4bb46c48b0da1d475b87cde, type: 3}
       propertyPath: inputKey
@@ -209,10 +213,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2533417873950078236, guid: d02d9443e4bb46c48b0da1d475b87cde, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d02d9443e4bb46c48b0da1d475b87cde, type: 3}
 --- !u!1 &220156059
 GameObject:

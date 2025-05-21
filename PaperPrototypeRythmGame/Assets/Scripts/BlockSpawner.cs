@@ -6,6 +6,7 @@ using System.Linq;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Multimedia;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 
@@ -136,6 +137,7 @@ public class BlockSpawner : MonoBehaviour
         spawnedNote.GetComponent<Renderer>().material = goal.GetComponent<Renderer>().material;
         spawnedNote.GetComponent<MovingBlock>().speed = blockSpeed;
         spawnedNote.GetComponent<MovingBlock>().goal = closest.position;
+        spawnedNote.GetComponent<MovingBlock>().Key = 1;
         if (spawnedNote.GetComponent<LongBlock>() != null)
         {
             spawnedNote.GetComponent<LongBlock>().length = note.Length;

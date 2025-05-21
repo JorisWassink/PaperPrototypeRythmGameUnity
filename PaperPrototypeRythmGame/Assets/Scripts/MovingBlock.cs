@@ -49,7 +49,7 @@ public abstract class MovingBlock : MonoBehaviour
         var direction = goal - transform.position;
         
         _rigidbody.velocity = direction.normalized * speed;
-        
+        _renderer.material = KeyMaterialMapper.Instance.GetMaterial(KeyCode.Alpha0 + Key);
         
         var particleRenderer =_particleSystem.gameObject.GetComponent<Renderer>();
         particleRenderer.material = _renderer.material;

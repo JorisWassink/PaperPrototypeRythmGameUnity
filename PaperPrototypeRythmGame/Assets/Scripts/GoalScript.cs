@@ -160,15 +160,16 @@ public class GoalScript : MonoBehaviour
     private void RefreshBlocks()
     {
         _blocks.Clear();
-        foreach (Transform child in blockParent.transform)
+        foreach (Transform child in blockParent.GetComponentsInChildren<Transform>())
         {
-            if (child != null && child.gameObject.activeInHierarchy && child.gameObject.CompareTag("Block"))
+            if (child != blockParent.transform && child.CompareTag("Block") && child.gameObject.activeInHierarchy)
             {
                 _blocks.Add(child.gameObject);
                 Debug.Log(child.gameObject.name);
             }
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
