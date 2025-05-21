@@ -40,6 +40,13 @@ public class NoteLineEditor : Editor
         {
             UpdateNoteLineYs(script);
         }
+
+        if (GUILayout.Button("Center on Camera"))
+        {
+            script.transform.position = new Vector3(script.center.x, Camera.main.transform.position.y, script.center.z);
+            script.center = script.transform.position;
+        }
+        
     }
 
     void UpdateNoteLineYs(NoteLines script)

@@ -113,11 +113,11 @@ public class GoalScript : MonoBehaviour
 
         _wasPressedLastFrame = isPressed; // Update the last frame state
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && _currentIndex > 0)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && _currentIndex > 0)
             UpdatePosition(_currentIndex - 1);
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && _currentIndex + 1 < _positions.Count)
-            UpdatePosition(_currentIndex + 1);
+        if (Input.GetKeyDown(KeyCode.UpArrow) && _currentIndex + 1 < _positions.Count)
+            UpdatePosition(_currentIndex  + 1);
 
         
     }
