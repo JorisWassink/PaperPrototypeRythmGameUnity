@@ -9,6 +9,8 @@ public abstract class MovingBlock : MonoBehaviour
     private ParticleSystem _particleSystem;
     private Rigidbody _rigidbody;
     public Renderer _renderer;
+    [HideInInspector] public Vector3 goal;
+    [HideInInspector] public int Key;
     
     [SerializeField] public float speed;
     [SerializeField] public float minDistance = 2f;
@@ -43,7 +45,10 @@ public abstract class MovingBlock : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _particleSystem = GetComponentInChildren<ParticleSystem>();
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.velocity = -transform.up * speed;
+        
+        var direction = goal - transform.position;
+        
+        _rigidbody.velocity = direction.normalized * speed;
         
         
         var particleRenderer =_particleSystem.gameObject.GetComponent<Renderer>();
