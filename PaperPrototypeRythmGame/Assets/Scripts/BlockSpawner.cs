@@ -8,6 +8,7 @@ using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Multimedia;
 using Unity.VisualScripting;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class BlockSpawner : MonoBehaviour
@@ -137,7 +138,7 @@ public class BlockSpawner : MonoBehaviour
         spawnedNote.GetComponent<Renderer>().material = goal.GetComponent<Renderer>().material;
         spawnedNote.GetComponent<MovingBlock>().speed = blockSpeed;
         spawnedNote.GetComponent<MovingBlock>().goal = closest.position;
-        spawnedNote.GetComponent<MovingBlock>().Key = 1;
+        spawnedNote.GetComponent<MovingBlock>().Key = Random.Range(1,4);
         if (spawnedNote.GetComponent<LongBlock>() != null)
         {
             spawnedNote.GetComponent<LongBlock>().length = note.Length;

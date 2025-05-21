@@ -22,14 +22,14 @@ public abstract class MovingBlock : MonoBehaviour
     [SerializeField] private GameObject smoke;
     
     public Vector3 StartPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.min.y,
+        _renderer.bounds.min.x,
+        _renderer.bounds.center.y,
         _renderer.bounds.center.z
     );
 
     public Vector3 EndPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.max.y,
+        _renderer.bounds.max.x,
+        _renderer.bounds.center.y,
         _renderer.bounds.center.z
     );
     public abstract void StartHolding(GameObject goal);
@@ -92,9 +92,9 @@ public abstract class MovingBlock : MonoBehaviour
         
         // Choose material based on points
         Material selectedMaterial;
-        if (points < 1f)
+        if (points < 3f)
             selectedMaterial = meh;
-        else if (points < 2f)
+        else if (points < 4.5f)
             selectedMaterial = nice;
         else
             selectedMaterial = great;
