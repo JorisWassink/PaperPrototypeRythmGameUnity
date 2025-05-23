@@ -21,6 +21,7 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField] private GameObject block;
     [SerializeField] private float blockSpeed;
     [SerializeField] private GameObject _goal;
+    [SerializeField] private float extraNoteDelay;
     
     private MidiPlayer _midiPlayer;
     private List<Transform> _spawnPoints;
@@ -68,7 +69,7 @@ public class BlockSpawner : MonoBehaviour
         
         var startDspTime = AudioSettings.dspTime;
         StartCoroutine(WaitAndPlay(fallTime));
-        StartCoroutine(SpawnNotesWithTiming(p1Notes, _goal,startDspTime, fallTime));
+        StartCoroutine(SpawnNotesWithTiming(p1Notes, _goal,startDspTime, fallTime + extraNoteDelay));
 
 
     }

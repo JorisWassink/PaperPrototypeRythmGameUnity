@@ -1062,10 +1062,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockMaterial: {fileID: 2100000, guid: 130a8f2baaaeb324da72226e0c44deae, type: 2}
-  midiFile: Assets/Under-The-Sea-(From-'The-Little-Mermaid')-1.mid
+  midiFile: Assets/TestSong.mid
   block: {fileID: 3544432444610561468, guid: b8f8def5a55bbbf4bbca1bc908196e20, type: 3}
   blockSpeed: 10
   _goal: {fileID: 1364836007}
+  extraNoteDelay: 0.6
 --- !u!1 &1693321043
 GameObject:
   m_ObjectHideFlags: 0
