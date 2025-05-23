@@ -6,9 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="d907a4b5-7b98-49b4-9219-ce8fa32899bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Notes/SmallBlock.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Notes/SmallBlock.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SmallBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SmallBlock.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TestSong.mid.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestSong.mid.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +37,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/d4/2a2d4372/TimeConverter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/78401d1708234a9fb71c84a647c6082f26400/28/e1281168/ParticleSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Documenten/CMGT/Y2T3/Networking/A3_mini_town/A3_mini_town/starting_code/client/Assets/Scripts/ChatLobbyClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" root0="FORCE_HIGHLIGHTING" />
@@ -42,19 +52,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "MidiImplementation",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;NewGameplayStyle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.44f1\Editor\Unity.exe" />
@@ -111,7 +121,8 @@
       <workItem from="1747643805657" duration="175000" />
       <workItem from="1747644109403" duration="15799000" />
       <workItem from="1747728316064" duration="1495000" />
-      <workItem from="1747734571325" duration="12250000" />
+      <workItem from="1747734571325" duration="13446000" />
+      <workItem from="1747993036698" duration="1186000" />
     </task>
     <servers />
   </component>
