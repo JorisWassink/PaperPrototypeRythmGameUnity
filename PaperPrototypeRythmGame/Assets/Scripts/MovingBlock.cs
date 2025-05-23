@@ -9,6 +9,8 @@ public abstract class MovingBlock : MonoBehaviour
     private ParticleSystem _particleSystem;
     private Rigidbody _rigidbody;
     public Renderer _renderer;
+    [HideInInspector] public Vector3 goal;
+    [HideInInspector] public int Key;
     
     [SerializeField] public float speed;
     [SerializeField] public float minDistance = 2f;
@@ -20,14 +22,14 @@ public abstract class MovingBlock : MonoBehaviour
     [SerializeField] private GameObject smoke;
     
     public Vector3 StartPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.min.y,
+        _renderer.bounds.min.x,
+        _renderer.bounds.center.y,
         _renderer.bounds.center.z
     );
 
     public Vector3 EndPosition => new Vector3(
-        _renderer.bounds.center.x,
-        _renderer.bounds.max.y,
+        _renderer.bounds.max.x,
+        _renderer.bounds.center.y,
         _renderer.bounds.center.z
     );
     public abstract void StartHolding(GameObject goal);
@@ -43,8 +45,11 @@ public abstract class MovingBlock : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _particleSystem = GetComponentInChildren<ParticleSystem>();
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.velocity = -transform.up * speed;
         
+        var direction = goal - transform.position;
+        
+        _rigidbody.velocity = direction.normalized * speed;
+        _renderer.material = KeyMaterialMapper.Instance.GetMaterial(KeyCode.Alpha0 + Key);
         
         var particleRenderer =_particleSystem.gameObject.GetComponent<Renderer>();
         particleRenderer.material = _renderer.material;
@@ -87,9 +92,9 @@ public abstract class MovingBlock : MonoBehaviour
         
         // Choose material based on points
         Material selectedMaterial;
-        if (points < 1f)
+        if (points < 3f)
             selectedMaterial = meh;
-        else if (points < 2f)
+        else if (points < 4.5f)
             selectedMaterial = nice;
         else
             selectedMaterial = great;

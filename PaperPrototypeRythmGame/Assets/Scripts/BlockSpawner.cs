@@ -6,7 +6,9 @@ using System.Linq;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using Melanchall.DryWetMidi.Multimedia;
-
+using Unity.VisualScripting;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class BlockSpawner : MonoBehaviour
@@ -18,16 +20,14 @@ public class BlockSpawner : MonoBehaviour
     [SerializeField] private string midiFile;
     [SerializeField] private GameObject block;
     [SerializeField] private float blockSpeed;
+    [SerializeField] private GameObject _goal;
+    [SerializeField] private float extraNoteDelay;
+    
     private MidiPlayer _midiPlayer;
     private List<Transform> _spawnPoints;
-
-    public List<Transform> allGoals; // Assign all goal points (unsorted) in Inspector
-    private List<Transform> goalPoints;
-
+    
     private void Awake()
     {
-        allGoals = new List<Transform>();
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -40,27 +40,8 @@ public class BlockSpawner : MonoBehaviour
     void Start()
     {
         InitializeMidiPlayer();
-        _spawnPoints = new List<Transform>();
-        foreach (var trans in GetComponentsInChildren<Transform>())
-        {
-            if (trans.gameObject.CompareTag("Spawner"))
-            {
-                _spawnPoints.Add(trans.transform);
-            }
-        }
-        
-        goalPoints = new List<Transform>();
-
-        foreach (var spawner in _spawnPoints)
-        {
-            Transform closestGoal = allGoals
-                .OrderBy(g => Vector3.Distance(spawner.position, g.position))
-                .First();
-
-            goalPoints.Add(closestGoal);
-            allGoals.Remove(closestGoal); // Prevent duplicates
-        }
-
+        _spawnPoints = NoteLines.Instance.SpawnPoints;
+        _spawnPoints = _spawnPoints.OrderBy(p => p.position.y).ToList();
     }
 
     void InitializeMidiPlayer()
@@ -82,46 +63,46 @@ public class BlockSpawner : MonoBehaviour
 
     private void StartPlaying(object sender, Event e)
     {
-        var note = _midiPlayer.Notes[0];
-        var time = EstimateFallTime(note);
-        StartCoroutine(WaitAndPlay(time));
-        StartCoroutine(SpawnNotesWithTiming());
+        var fallTime = 3f;
+
+        var p1Notes = _midiPlayer.GetNotesOfChannel(1);
+        
+        var startDspTime = AudioSettings.dspTime;
+        StartCoroutine(WaitAndPlay(fallTime));
+        StartCoroutine(SpawnNotesWithTiming(p1Notes, _goal,startDspTime, fallTime + extraNoteDelay));
+
+
     }
     
-    private IEnumerator SpawnNotesWithTiming()
+    private IEnumerator SpawnNotesWithTiming(List<Note> notes, GameObject goal, double startTime, float fallTime)
     {
-        double startTime = AudioSettings.dspTime;
-
-        // Load MIDI file and tempo map once
-        MidiFile file = MidiFile.Read(midiFile);
+        MidiFile file = _midiPlayer.MidiFile;
         var tempoMap = file.GetTempoMap();
 
-        foreach (var note in _midiPlayer.Notes.OrderBy(n => n.Time))
+        foreach (var note in notes)
         {
-            // Convert note time to seconds
             var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
-            double noteTimeInSeconds = noteTimeSpan.TotalSeconds;
+            var noteTimeInSeconds = noteTimeSpan.TotalSeconds;
+            var noteSpawnTime = startTime + noteTimeInSeconds;
 
-            // Calculate when the note should spawn
-            double noteSpawnTime = startTime + noteTimeInSeconds;
-            double waitTime = noteSpawnTime - AudioSettings.dspTime;
+            while (AudioSettings.dspTime < noteSpawnTime)
+                yield return null;
 
-            // Wait until it's time to spawn the note
-            if (waitTime > 0)
-                yield return new WaitForSeconds((float)waitTime);
 
-            SpawnMidiNote(block, note);
+            var dist = EstimateRequiredDistance(note, fallTime);
+            SpawnMidiNote(block, note, notes, goal, dist);
         }
     }
-
-
-
+    
     private IEnumerator WaitAndPlay(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        float start = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - start < waitTime)
+            yield return null;
+
         _midiPlayer.StartPlayback();
-        
     }
+
     private void OnApplicationQuit()
     {
         _midiPlayer.NotesPlaybackStartedEvent -= OnNotesPlaybackStarted;
@@ -134,57 +115,44 @@ public class BlockSpawner : MonoBehaviour
         OnApplicationQuit();
     }
 
-    private void OnNotesPlaybackFinished(object sender, NotesEventArgs e)
-    {
-        
-    }
+    private void OnNotesPlaybackFinished(object sender, NotesEventArgs e) { }
     
-    private void OnNotesPlaybackStarted(object sender, NotesEventArgs e)
-    {
-        
-    }
-
-    float EstimateFallTime(Note note)
-    {
-        var closestSpawn = GetClosestSpawnPoint(note);
-
-        float DistanceIgnoreY(Vector3 a, Vector3 b) =>
-            Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z));
-
-        // Find closest goal ignoring Y
-        var goal = goalPoints.OrderBy(g => DistanceIgnoreY(g.position, closestSpawn.position)).First();
-
-        // Calculate full 3D distance including Y for fall time
-        var distance = Vector3.Distance(closestSpawn.position, goal.position);
-
-        var speed = note.Velocity / 100f * blockSpeed;
-
-        return distance / Mathf.Max(0.01f, speed); // prevent div by 0
-    }
+    private void OnNotesPlaybackStarted(object sender, NotesEventArgs e) { }
     
-    void SpawnMidiNote(GameObject block, Note note)
+    
+    float EstimateRequiredDistance(Note note,  float desiredFallTime)
     {
-        var closest = GetClosestSpawnPoint(note);
+        var speed = blockSpeed;
+        var distance = desiredFallTime * speed;
+        return distance;
+    }
 
-        var spawnedNote = Instantiate(block, closest.position, Quaternion.identity, closest);
-        spawnedNote.GetComponent<Renderer>().material = closest.GetComponent<Renderer>().material;
-        spawnedNote.GetComponent<MovingBlock>().speed = note.Velocity / 100f * blockSpeed;
+    
+    void SpawnMidiNote(GameObject noteObject, Note note, List<Note> notes, GameObject goal, float distance)
+    {
+        var closest = GetClosestSpawnPoint(note, notes);
+        
+        var spawnPosition = new Vector3(closest.position.x + distance, closest.transform.position.y, closest.position.z);
+        
+        var spawnedNote = Instantiate(noteObject, spawnPosition, Quaternion.identity);
+        spawnedNote.transform.SetParent(closest.transform, true);        
+        spawnedNote.GetComponent<Renderer>().material = goal.GetComponent<Renderer>().material;
+        spawnedNote.GetComponent<MovingBlock>().speed = blockSpeed;
+        spawnedNote.GetComponent<MovingBlock>().goal = closest.position;
+        spawnedNote.GetComponent<MovingBlock>().Key = Random.Range(1,4);
         if (spawnedNote.GetComponent<LongBlock>() != null)
         {
             spawnedNote.GetComponent<LongBlock>().length = note.Length;
         }
     }
 
-    private Transform GetClosestSpawnPoint(Note note)
+    private Transform GetClosestSpawnPoint(Note note, List<Note> notes)
     {
-        var minNote = _midiPlayer.MinNote.NoteNumber;
-        var maxNote = _midiPlayer.MaxNote.NoteNumber;
+        var minNote = _midiPlayer.GetMinNote(notes).NoteNumber;
+        var maxNote = _midiPlayer.GetMaxNote(notes).NoteNumber;
         var t = (float)(note.NoteNumber - minNote) / (maxNote - minNote);
+        var index = Mathf.Clamp(Mathf.RoundToInt(t * (_spawnPoints.Count - 1)), 0, _spawnPoints.Count - 1);
+        return _spawnPoints[index];
 
-        var left = _spawnPoints.First();
-        var right = _spawnPoints.Last();
-        var interpolated = Vector3.Lerp(left.position, right.position, t);
-        var closestSpawn = _spawnPoints.OrderBy(p => Vector3.Distance(p.position, interpolated)).First();
-        return closestSpawn;
     }
 }

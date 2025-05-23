@@ -15,12 +15,17 @@ public class GoalScript : MonoBehaviour
     private Renderer _renderer;
     private float _alpha;
     
+    private List<Vector3> _positions;
+    private int _currentIndex = 0;
+    
     [SerializeField] private float minDistance;
     
     [SerializeField] private List<KeyCode> inputKeys;
     [SerializeField] private GameObject blockParent;
-
     
+    [SerializeField] private int MaxKeys;
+
+    [HideInInspector] public Transform spawnPoint;
 
 
     private bool _wasPressedLastFrame;
@@ -29,30 +34,27 @@ public class GoalScript : MonoBehaviour
 
     private void Start()
     {
+        spawnPoint = blockParent.transform;
         _renderer = GetComponent<Renderer>();
         _alpha = _renderer.material.color.a;
         _blocks = new List<GameObject>();
-        foreach (Transform child in blockParent.transform)
-        {
-            _blocks.Add(child.gameObject);
-        }
+        _positions = NoteLines.Instance.noteLines;
+        RefreshBlocks();
         UpdateBlock();
-    }
-
-    private void OnEnable()
-    {
-        BlockSpawner.Instance.allGoals.Add(transform);
+        UpdatePosition(0);
     }
 
 
     private void UpdateBlock()
     {
+        
         Transform closestBlock = null;
         float closestDistance = minDistance;
         Vector3 currentPosition = transform.position;
 
         foreach (var block in _blocks)
         {
+            Debug.Log(block.name);
             MovingBlock movingBlock = block.GetComponent<MovingBlock>();
 
             float distance = Vector3.Distance(currentPosition, movingBlock.StartPosition);
@@ -65,30 +67,59 @@ public class GoalScript : MonoBehaviour
 
         if (closestBlock != null)
             _currentBlock = closestBlock.gameObject;
-        
-
         else
             _currentBlock = null;
-        
-            
     }
 
 
     private void Update()
     {
         RefreshBlocks(); // Refresh block list every frame
-        if (_currentBlock == null)
-            UpdateBlock();
-
-        bool isPressed = AllKeysPressed();
-
-        if (isPressed)
+        if (_currentBlock == null || _currentBlock.Equals(null))
         {
-            if (_currentBlock != null)
+            UpdateBlock();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) && _currentIndex > 0)
+            UpdatePosition(_currentIndex - 1);
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && _currentIndex + 1 < _positions.Count)
+            UpdatePosition(_currentIndex  + 1);
+        
+        
+        int isPressed = 0;
+
+        for (int i = 1; i <= MaxKeys; i++)
+        {
+            if (Input.GetKeyDown(i.ToString()))
+            {
+                _renderer.material = (KeyMaterialMapper.Instance.GetMaterial(KeyCode.Alpha0 + i));
+                isPressed = i;
+                break;
+            }
+        }
+        
+        MovingBlock block = null;
+        if (_currentBlock != null)
+        {
+            block = _currentBlock.GetComponent<MovingBlock>();
+        }
+
+
+        
+        if (block == null)
+            return;
+
+        
+        
+        if (isPressed != 0)
+        {
+            if (_currentBlock != null && block.Key == isPressed)
             {
                 if (!_wasPressedLastFrame)
                 {
-                    _currentBlock.GetComponent<MovingBlock>().StartHolding(gameObject);
+                    block.StartHolding(gameObject);
                 }
 
                 _currentBlock.GetComponent<MovingBlock>().IsHolding(gameObject);
@@ -112,34 +143,33 @@ public class GoalScript : MonoBehaviour
             _renderer.material.color = color;
         }
 
-        _wasPressedLastFrame = isPressed; // Update the last frame state
+       
+                
+        if (isPressed == 0)
+            _wasPressedLastFrame = false; // Update the last frame state
+        else if (block.Key == isPressed)
+            _wasPressedLastFrame = true;
     }
 
-
-
+    private void UpdatePosition(int index)
+    {
+        _currentIndex = index;
+        transform.position = _positions[index];
+    }
 
     private void RefreshBlocks()
     {
         _blocks.Clear();
-        foreach (Transform child in blockParent.transform)
+        foreach (Transform child in blockParent.GetComponentsInChildren<Transform>())
         {
-            if (child != null && child.gameObject.activeInHierarchy && !child.gameObject.CompareTag("Destroyed"))
+            if (child != blockParent.transform && child.CompareTag("Block") && child.gameObject.activeInHierarchy)
             {
                 _blocks.Add(child.gameObject);
+                Debug.Log(child.gameObject.name);
             }
         }
     }
 
-
-
-    private bool AllKeysPressed()
-    {
-        foreach (var key in inputKeys)
-        {
-            if (!Input.GetKey(key)) return false;
-        }
-        return true;
-    }
 
     private void OnTriggerExit(Collider other)
     {
@@ -147,6 +177,4 @@ public class GoalScript : MonoBehaviour
         Destroy(_currentBlock);
         UpdateBlock();
     }
-
-    
 }
