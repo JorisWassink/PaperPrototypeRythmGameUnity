@@ -16,14 +16,12 @@ public class BlockSpawner : MonoBehaviour
     public static BlockSpawner Instance { get; private set; }
     
     [Header("Spawn Settings")]
-    [SerializeField] private Material blockMaterial;
     [SerializeField] private string midiFile;
     [SerializeField] private GameObject block;
-    [SerializeField] private float blockSpeed;
-    [SerializeField] private GameObject _goal;
-    [SerializeField] private float extraNoteDelay;
+    [SerializeField] public float blockSpeed;
+    [SerializeField] private float prepTime;
     
-    private MidiPlayer _midiPlayer;
+    [HideInInspector] public MidiPlayer _midiPlayer;
     private List<Transform> _spawnPoints;
     
     private void Awake()
@@ -63,44 +61,29 @@ public class BlockSpawner : MonoBehaviour
 
     private void StartPlaying(object sender, Event e)
     {
-        var fallTime = 3f;
-
         var p1Notes = _midiPlayer.GetNotesOfChannel(1);
-        
-        var startDspTime = AudioSettings.dspTime;
-        StartCoroutine(WaitAndPlay(fallTime));
-        StartCoroutine(SpawnNotesWithTiming(p1Notes, _goal,startDspTime, fallTime + extraNoteDelay));
-
-
+        SpawnAllNotes(p1Notes);
+        //_midiPlayer.StartPlayback();
     }
     
-    private IEnumerator SpawnNotesWithTiming(List<Note> notes, GameObject goal, double startTime, float fallTime)
-    {
-        MidiFile file = _midiPlayer.MidiFile;
-        var tempoMap = file.GetTempoMap();
 
+
+    private void SpawnAllNotes(List<Note> notes)
+    {
+        var tempoMap = _midiPlayer.MidiFile.GetTempoMap();
         foreach (var note in notes)
         {
-            var noteTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
-            var noteTimeInSeconds = noteTimeSpan.TotalSeconds;
-            var noteSpawnTime = startTime + noteTimeInSeconds;
-
-            while (AudioSettings.dspTime < noteSpawnTime)
-                yield return null;
-
-
-            var dist = EstimateRequiredDistance(note, fallTime);
-            SpawnMidiNote(block, note, notes, goal, dist);
+            var metricTime = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap).TotalSeconds;
+            SpawnMidiNote(block, note, notes, (float)metricTime * blockSpeed + 20);
         }
     }
-    
-    private IEnumerator WaitAndPlay(float waitTime)
-    {
-        float start = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - start < waitTime)
-            yield return null;
 
-        _midiPlayer.StartPlayback();
+    
+
+
+    public void DropMyNeedle()
+    {
+        StartCoroutine(_midiPlayer.StartPlayback());
     }
 
     private void OnApplicationQuit()
@@ -119,24 +102,17 @@ public class BlockSpawner : MonoBehaviour
     
     private void OnNotesPlaybackStarted(object sender, NotesEventArgs e) { }
     
-    
-    float EstimateRequiredDistance(Note note,  float desiredFallTime)
-    {
-        var speed = blockSpeed;
-        var distance = desiredFallTime * speed;
-        return distance;
-    }
+
 
     
-    void SpawnMidiNote(GameObject noteObject, Note note, List<Note> notes, GameObject goal, float distance)
+    void SpawnMidiNote(GameObject noteObject, Note note, List<Note> notes, float distance)
     {
         var closest = GetClosestSpawnPoint(note, notes);
         
-        var spawnPosition = new Vector3(closest.position.x + distance, closest.transform.position.y, closest.position.z);
+        var spawnPosition = new Vector3(distance, closest.transform.position.y, closest.position.z);
         
         var spawnedNote = Instantiate(noteObject, spawnPosition, Quaternion.identity);
         spawnedNote.transform.SetParent(closest.transform, true);        
-        spawnedNote.GetComponent<Renderer>().material = goal.GetComponent<Renderer>().material;
         spawnedNote.GetComponent<MovingBlock>().speed = blockSpeed;
         spawnedNote.GetComponent<MovingBlock>().goal = closest.position;
         spawnedNote.GetComponent<MovingBlock>().Key = Random.Range(1,4);
@@ -153,6 +129,10 @@ public class BlockSpawner : MonoBehaviour
         var t = (float)(note.NoteNumber - minNote) / (maxNote - minNote);
         var index = Mathf.Clamp(Mathf.RoundToInt(t * (_spawnPoints.Count - 1)), 0, _spawnPoints.Count - 1);
         return _spawnPoints[index];
+    }
 
+    private float GetDistance(float seconds)
+    {
+        return seconds * blockSpeed;
     }
 }

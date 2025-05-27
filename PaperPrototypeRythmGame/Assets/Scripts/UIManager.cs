@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
         var lines = NoteLines.Instance.noteLines;
         foreach (var line in lines)
         {
-            var position = new Vector3(0, line.y, 0);
+            var position = new Vector3(0, line.position.y, 0);
             var l = Instantiate(linePrefab, position, Quaternion.identity);
             l.transform.SetParent(transform, true);
         }
