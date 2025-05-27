@@ -20,7 +20,7 @@ public class NoteLineEditor : Editor
 
         // Draw lines
         Handles.color = Color.green;
-        int half = script.lineCount / 2;
+        int half = script.noteLines.Count / 2;
         for (int i = -half; i <= half; i++)
         {
             float y = script.center.y + i * script.spacing;
@@ -51,12 +51,13 @@ public class NoteLineEditor : Editor
 
     void UpdateNoteLineYs(NoteLines script)
     {
-        int half = script.lineCount / 2;
-        script.noteLines.Clear();
-        for (int i = -half; i <= half; i++)
+        int half = script.noteLines.Count / 2;
+        
+        for (int i = -half, idx = 0; i <= half; i++, idx++)
         {
             float y = script.center.y + i * script.spacing;
-            script.noteLines.Add(new Vector3(script.center.x, y, script.center.z));
+            NoteLine line = script.noteLines[idx];
+            line.position = new Vector3(script.center.x, y, script.center.z);
         }
 
         EditorUtility.SetDirty(script);

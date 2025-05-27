@@ -1,15 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class NoteLine
+{
+    [HideInInspector] public Vector3 position = Vector3.zero;
+    public KeyCode key;
+}
+
 public class NoteLines : MonoBehaviour
 {
     public static NoteLines Instance { get; private set; }
 
-    public int lineCount = 5;
     public float spacing = 1f;
     public Vector3 center = Vector3.zero;
 
-    [HideInInspector] public List<Vector3> noteLines = new List<Vector3>();
+    [SerializeField] public List<NoteLine> noteLines = new List<NoteLine>();
     [HideInInspector] public List<Transform> SpawnPoints = new List<Transform>();
 
     private void Awake()
@@ -27,7 +33,7 @@ public class NoteLines : MonoBehaviour
             GameObject obj = new GameObject();
             obj.name = $"SpawnPoint {i}";
             obj.transform.SetParent(transform);
-            obj.transform.position = noteLines[i];
+            obj.transform.position = noteLines[i].position;
             SpawnPoints.Add(obj.transform);
         }
     }

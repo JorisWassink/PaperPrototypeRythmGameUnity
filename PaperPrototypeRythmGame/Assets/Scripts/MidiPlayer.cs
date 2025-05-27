@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -101,13 +102,13 @@ public class MidiPlayer : MonoBehaviour
         Playback = new Playback(timedEvents, tempoMap, _outputDevice);
         Playback.NotesPlaybackStarted += OnNotesPlaybackStarted;
         Playback.NotesPlaybackFinished += OnNotesPlaybackFinished;
-        Debug.Log("Initializing file playback (muted but active)...");
     }
 
 
-    public void StartPlayback()
+    public IEnumerator StartPlayback()
     {
         Playback.Start();
+        yield return null;
     }
     
     

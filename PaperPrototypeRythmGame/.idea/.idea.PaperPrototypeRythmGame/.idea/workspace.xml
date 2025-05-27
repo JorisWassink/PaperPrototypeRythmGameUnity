@@ -6,18 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d907a4b5-7b98-49b4-9219-ce8fa32899bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PaperPrototypeRythmGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Notes/SmallBlock.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Notes/SmallBlock.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Goal Left.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Goal Left.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/funky.unity.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/KeyMaterialMapper.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SmallBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SmallBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestSong.mid.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TestSong.mid.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MidiPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MovingBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MovingBlock.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,11 +27,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/24/e6d60f92/NotesEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/40/15dac656/MetricTimeSpan.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/65/13c66e23/Playback.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/6b/216aed4e/TempoMapManagingUtilities.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/9e/2d95ae3b/Note.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/577d1e7505134db78650179a89fa5737b0c00/d4/2a2d4372/TimeConverter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/78401d1708234a9fb71c84a647c6082f26400/28/e1281168/ParticleSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Documenten/CMGT/Y2T3/Networking/A3_mini_town/A3_mini_town/starting_code/client/Assets/Scripts/ChatLobbyClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Editor/NoteLineEditor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/GoalLine.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/BlockSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GoalScript.cs" root0="FORCE_HIGHLIGHTING" />
@@ -56,7 +52,7 @@
   &quot;keyToString&quot;: {
     &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;NewGameplayStyle&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ReworkedMidi&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -123,6 +119,7 @@
       <workItem from="1747728316064" duration="1495000" />
       <workItem from="1747734571325" duration="13446000" />
       <workItem from="1747993036698" duration="1186000" />
+      <workItem from="1748337249020" duration="2000" />
     </task>
     <servers />
   </component>

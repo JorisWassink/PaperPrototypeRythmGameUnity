@@ -54,7 +54,7 @@ public abstract class MovingBlock : MonoBehaviour
         var particleRenderer =_particleSystem.gameObject.GetComponent<Renderer>();
         particleRenderer.material = _renderer.material;
     }
-
+    
     public void DestroyBlock(bool particles)
     {
         Renderer rend = GetComponent<Renderer>();
@@ -66,7 +66,6 @@ public abstract class MovingBlock : MonoBehaviour
 
     private IEnumerator DestroyAfterDelay(float waitTime)
     {
-        Debug.Log(waitTime);
         yield return new WaitForSeconds(waitTime);
         Destroy(gameObject);
     }
